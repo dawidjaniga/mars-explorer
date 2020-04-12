@@ -1,6 +1,5 @@
-import { createHook, createStore, defaults } from 'react-sweet-state'
 import api from 'api'
-defaults.devtools = true
+import { createHook, createStore } from 'react-sweet-state'
 
 const initialState = {
   tasks: [],
@@ -10,39 +9,33 @@ const initialState = {
 
 const actions = {
   load: () => async ({ getState, setState }) => {
-    let newState
-    if (getState().isLoading) {
-      return
-    }
+    // if (getState().isLoading) {
+    //   return
+    // }
 
-    console.log('Loading tasks...')
-
-    newState = { ...getState(), isLoading: true }
-    setState(newState)
-    console.log('isLoading set newState', newState)
+    setState(draft => {
+      draft.isLoading = true
+    })
 
     const tasks = await api.tasks.read()
 
-    newState = { ...getState(), tasks, isLoading: false }
-    console.log('isLoading set newState', newState)
-    setState(newState)
-  },
-  removeTask: id => ({ getState, setState }) => {
-    const { tasks } = getState()
-
-    setState({ tasks: tasks.filter(task => task.id !== id) })
+    setState(draft => {
+      draft.tasks = tasks
+      draft.isLoading = false
+    })
   },
   toggleTaskChecked: id => ({ getState, setState }) => {
     const { tasks } = getState()
     const taskIndex = tasks.findIndex(task => task.id === id)
 
-    tasks[taskIndex].checked = !tasks[taskIndex].checked
-
-    setState({ tasks })
+    setState(draft => {
+      draft.tasks[taskIndex].checked = !tasks[taskIndex].checked
+    })
   },
   setFilter: filter => ({ getState, setState }) => {
-    const state = getState()
-    setState({ ...state, filter })
+    setState(draft => {
+      draft.filter = filter
+    })
   }
 }
 

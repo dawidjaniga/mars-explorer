@@ -1,11 +1,6 @@
 {
   "tasks": [
     {
-      "id": "Uakgb_J5m9g-0JDMbcJqLJ",
-      "name": "Find easy JSON prototyping tool",
-      "checked": false
-    },
-    {
       "name": "Add request race condition example",
       "id": "2SYwBCWL37l9QSUXxvO41",
       "checked": false
@@ -13,17 +8,25 @@
     {
       "name": "Show features structure",
       "id": "iFt6RX3ToCNyGNhfcwva-",
+      "checked": true
+    },
+    {
+      "name": "qwer",
+      "id": "W9-3hPab_pdEAHRKdRtn0",
       "checked": false
     },
     {
-      "name": "New task",
-      "id": "OUaHHun6qEYq3vny6njqC",
+      "name": "Halko",
+      "id": "niLQp6PaveCM_51ZmXReb",
       "checked": false
+    }
+  ],
+  "todos": [
+    {
+      "title": "Ok"
     },
     {
-      "name": "Qwertty",
-      "id": "lLAmkZI6S1_FVsh3ywOG8",
-      "checked": false
+      "title": "Whats next?"
     }
   ]
 }

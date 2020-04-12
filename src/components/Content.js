@@ -5,7 +5,7 @@ import styled from 'styled-components'
 const Content = styled(Layout.Content)`
   background: #fff;
   padding: 50px;
-  max-width: 960px;
+  /* max-width: ${props => (props.fullwidth ? '100%' : '960px')}; */
   width: 100%;
   margin: 40px;
 `

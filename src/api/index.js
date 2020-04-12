@@ -6,18 +6,16 @@ const client = ky.create({ prefixUrl })
 
 const api = {
   tasks: {
-    create: async data => {
-      await client.post('tasks', {
+    create: data =>
+      client.post('tasks', {
         json: {
           ...data,
           id: nanoid(),
           checked: false
         }
-      })
-    },
-    read: (id = '') => {
-      return client.get(`tasks/${id}`).json()
-    }
+      }),
+    read: (id = '') => client.get(`tasks/${id}`).json(),
+    delete: id => client.delete(`tasks/${id}`).json()
   }
 }
 

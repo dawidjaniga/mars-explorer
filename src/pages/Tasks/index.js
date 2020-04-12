@@ -1,20 +1,21 @@
-import React from 'react'
-
-import Page from 'components/Page'
-import Header from 'components/Header'
+import { Typography } from 'antd'
 import Content from 'components/Content'
 import Footer from 'components/Footer'
-import { Filters, Filter } from './Filters'
+import Header from 'components/Header'
+import Page from 'components/Page'
+import React from 'react'
+import { AddTask } from './AddTask'
+import { Filter, Filters } from './Filters'
 import Tasks from './Tasks'
 
-import { AddTask } from './AddTask'
+const { Title } = Typography
 
 export default function TasksPage () {
   return (
     <Page>
       <Header />
       <Content>
-        <h1>Tasks</h1>
+        <Title level={1}>Tasks</Title>
         <AddTask />
         <Filters>
           <Filter value='all'>All</Filter>

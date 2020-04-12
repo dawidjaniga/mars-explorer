@@ -1,6 +1,7 @@
 import React from 'react'
 import TaskItem from 'components/TaskItem'
 import { useTaskStore } from './store'
+import api from 'api'
 
 export function TaskWrapper ({ id }) {
   const [state, actions] = useTaskStore()
@@ -10,8 +11,9 @@ export function TaskWrapper ({ id }) {
     actions.toggleTaskChecked(id)
   }
 
-  function handleRemove () {
-    actions.removeTask(id)
+  async function handleRemove () {
+    await api.tasks.delete(id)
+    actions.load()
   }
 
   return (

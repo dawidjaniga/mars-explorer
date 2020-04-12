@@ -8,16 +8,18 @@ export function AddTask () {
   const [name, setName] = useState()
   const [, { load }] = useActions()
 
-  function handleAdd () {
+  async function handleAdd () {
     if (name) {
-      api.tasks.create({ name })
+      await api.tasks.create({ name })
       setName('')
       load()
     }
   }
+
   function handleChange (event) {
     setName(event.target.value)
   }
+
   return (
     <Input.Group>
       <Input
