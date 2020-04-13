@@ -55,10 +55,16 @@ const actions = {
         draft.isLoading = false
       })
 
-      if (photos.length === 25) {
-        console.log('want moree pages')
-        dispatch(actions.setPage(currentPhotosPage + 1))
-        dispatch(actions.load())
+      if (false || photos.length === 25) {
+        console.log('Loading next page')
+        const nextPage = currentPhotosPage + 1
+        dispatch(actions.setPage(nextPage))
+
+        if (nextPage < 4) {
+          dispatch(actions.load())
+        } else {
+          console.log('Load finished')
+        }
       }
     }
   },

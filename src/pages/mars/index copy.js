@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Slider, Spin, Typography } from 'antd'
+import { Slider, Radio, Spin, Typography } from 'antd'
 import styled from 'styled-components'
 
 import Content from 'components/Content'
@@ -153,6 +153,12 @@ function Camera ({ name, photos }) {
   )
 }
 
+const options = [
+  { label: 'Curiosity', value: 'curiosity' },
+  { label: 'Opportunity', value: 'opportunity' },
+  { label: 'Spirit', value: 'spirit' }
+]
+
 export default function Mars () {
   const [state, actions] = useMarsStore()
 
@@ -169,11 +175,27 @@ export default function Mars () {
     actions.load()
   }
 
+  function handleRoverChange (event) {
+    actions.setRover(event.target.value)
+    actions.load()
+  }
+
   return (
     <Page>
       <Header />
       <Content>
         <Title level={1}>Mars</Title>
+        <Title level={2}>Rover</Title>
+        <Radio.Group
+          options={options}
+          onChange={handleRoverChange}
+          value={state.rover}
+        />
+        <Radio.Group
+          options={options}
+          onChange={handleRoverChange}
+          value={state.rover}
+        />
         Sol:{' '}
         <Slider
           value={state.sol}
