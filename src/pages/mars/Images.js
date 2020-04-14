@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Slider, Button, Radio, Spin, Typography } from 'antd'
+import { Slider, Radio, Spin, Typography } from 'antd'
 import styled from 'styled-components'
 import { useLocation, Link, useParams, useHistory } from 'react-router-dom'
+
+import { Button } from 'arwes'
 
 import Content from 'components/Content'
 import Footer from 'components/Footer'
@@ -90,7 +92,7 @@ function CameraLink ({ to, children }) {
 
   return (
     <Link to={to}>
-      <Button type={type}>{children}</Button>
+      <Button animate>{children}</Button>
     </Link>
   )
 }
