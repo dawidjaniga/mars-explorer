@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { Slider, Radio, Spin, Typography } from 'antd'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useLocation, Link, useParams, useHistory } from 'react-router-dom'
+import createDebug from 'debug'
 
-import { Button } from 'arwes'
+import { Button, Frame } from 'arwes'
 
 import Content from 'components/Content'
 import Footer from 'components/Footer'
-import Header from 'components/Header'
+import Slider from 'components/Slider'
 import Page from 'components/Page'
+import Loader from 'components/Loader'
 
-import Carousel from './components/Carousel'
-
-import { useCameraStore, CameraContainer } from './CameraStore'
+import { CameraContainer } from './CameraStore'
 import { useRoverStore, RoverContainer } from './RoverStore'
-import { PercentageLoader } from './PercentageLoader'
+import { Photos } from './containers/Photos'
 
-const { Title } = Typography
+export const debug = createDebug('mars:images')
 
 export const cameras = {
   fhaz: 'Front Hazard Avoidance Camera',
@@ -36,75 +35,44 @@ const camerasByRover = {
   spirit: ['fhaz', 'rhaz', 'navcam', 'pancam', 'minites']
 }
 
-const CameraWrapper = styled.div`
-  width: 100%;
-`
-
-export const Photo = styled.div`
-  width: 100%;
-  display: ${props => (props.show ? 'initial' : 'none')};
-
-  img {
-    width: 100%;
-  }
-`
-
-const Loader = styled.div`
-  width: 100%;
-  height: 24em;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-`
-
-function Photos () {
-  const { rover, camera, sol } = useParams()
-  const [cameraState, cameraActions] = useCameraStore()
-  // const { progress } = state.cameras[state.sol][camera]
-
-  useEffect(() => {
-    cameraActions.fetchPhotos({ rover, camera, sol })
-  }, [cameraActions, rover, camera, sol])
-
-  function imageLoaded () {
-    cameraActions.addCameraImageLoaded()
-  }
-
-  console.log(cameraState.photos)
-  if (!cameraState.photos.length) {
-    return 'No photos, try another camera'
-  }
-
-  return (
-    <CameraWrapper>
-      <Carousel photos={cameraState.photos} onImageLoaded={imageLoaded} />
-      {/* <PercentageLoader progress={progress}>
-        <Carousel photos={photos} onImageLoaded={imageLoaded} />
-      </PercentageLoader> */}
-    </CameraWrapper>
-  )
-}
-
-function CameraLink ({ to, children }) {
+function ButtonLink ({ to, children }) {
   const { pathname } = useLocation()
-  const isActive = to === pathname
-  const type = isActive ? 'primary' : ''
+  const isActive = pathname.includes(to)
+  const layer = isActive ? 'success' : 'control'
 
   return (
     <Link to={to}>
-      <Button animate>{children}</Button>
+      <Button animate layer={layer}>
+        {children}
+      </Button>
     </Link>
   )
 }
+
+const CamerasList = styled.div`
+  display: flex;
+`
+
+const CameraLink = styled.div`
+  padding: 1em;
+`
+
+const RoverWrapper = styled.div`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+`
+
+const RoverTop = styled.div``
 
 function Rover () {
   const { rover, sol, camera } = useParams()
   const history = useHistory()
   const [roverState, roverActions] = useRoverStore()
-  console.log('useParams()', useParams())
 
   useEffect(() => {
     if (rover) {
+      debug('fetchinh rover data...')
       roverActions.fetchDetails({ rover })
     }
   }, [roverActions, rover])
@@ -114,33 +82,40 @@ function Rover () {
   }
 
   if (roverState.isLoading) {
-    return (
-      <Loader>
-        <Spin />
-      </Loader>
-    )
+    return <Loader />
   }
 
+  debug('rover loaded')
+
   return (
-    <>
-      <Title level={3}>Select sol</Title>
-      <Slider
-        min={1}
-        max={roverState.maxSol}
-        defaultValue={sol}
-        onAfterChange={handleAfterSolChange}
-      />
+    <RoverWrapper>
+      <RoverTop>
+        <h3>Select sol</h3>
+        <Slider
+          min={1}
+          max={roverState.maxSol}
+          value={sol}
+          onAfterChange={handleAfterSolChange}
+        />
+      </RoverTop>
 
-      {camerasByRover[rover].map(camera => (
-        <CameraLink key={camera} to={`/images/${rover}/${sol}/${camera}`}>
-          {cameras[camera]}
-        </CameraLink>
-      ))}
-
+      {sol && (
+        <CamerasList>
+          {camerasByRover[rover].map(camera => (
+            <CameraLink key={camera}>
+              <ButtonLink to={`/images/${rover}/${sol}/${camera}`}>
+                {cameras[camera]}
+              </ButtonLink>
+            </CameraLink>
+          ))}
+        </CamerasList>
+      )}
       {camera && <Photos />}
-    </>
+    </RoverWrapper>
   )
 }
+
+const Top = styled.div``
 
 export default function Images () {
   const { rover, camera } = useParams()
@@ -148,14 +123,14 @@ export default function Images () {
 
   return (
     <Page>
-      <Header />
       <Content>
-        <Title level={1}>Explore Mars Images</Title>
-
-        <Link to='/images/curiosity/1000/'>curiosity</Link>
-        <Link to='/images/opportunity/1000'>opportunity</Link>
-        <Link to='/images/spirit/1000'>spirit</Link>
-
+        <Top>
+          <Frame animate level={2} corners={3}>
+            <ButtonLink to='/images/curiosity/'>curiosity</ButtonLink>
+            <ButtonLink to='/images/opportunity'>opportunity</ButtonLink>
+            <ButtonLink to='/images/spirit'>spirit</ButtonLink>
+          </Frame>
+        </Top>
         {rover && (
           <RoverContainer scope={rover}>
             <CameraContainer scope={`${rover}  ${camera}`}>

@@ -1,13 +1,11 @@
 import React from 'react'
-import { Layout } from 'antd'
 import styled from 'styled-components'
 
-const Content = styled(Layout.Content)`
-  background: #fff;
+const Content = styled.div`
   padding: 50px;
-  /* max-width: ${props => (props.fullwidth ? '100%' : '960px')}; */
-  width: 100%;
-  margin: 40px;
+  min-height: calc(100% - var(--footer-height));
+  display: flex;
+  flex-direction: column;
 `
 
 export default function ({ children }) {

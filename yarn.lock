@@ -3758,7 +3758,7 @@ debug-log@^1.0.0:
   resolved "https://registry.yarnpkg.com/debug-log/-/debug-log-1.0.1.tgz#2307632d4c04382b8df8a32f70b895046d52745f"
   integrity sha1-IwdjLUwEOCuN+KMvcLiVBG1SdF8=
 
-debug@*, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
+debug@*, debug@4.1.1, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.1.tgz#3b72260255109c6b589cee050f1d516139664791"
   integrity sha512-pYAIzeRo8J6KPEaJ0VWOh5Pzkbw/RetuzehGM7QRRX5he4fPHx2rdKMB256ehJCkX+XRQm16eZLqLNS8RSZXZw==
@@ -9979,6 +9979,11 @@ react-scripts@3.4.1:
     workbox-webpack-plugin "4.3.1"
   optionalDependencies:
     fsevents "2.1.2"
+
+react-slider@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-slider/-/react-slider-1.0.3.tgz#89bd9cf0bb87f07ce27d8724efa584d9c6e6dca8"
+  integrity sha512-6HSkzHeyPthoCuQseZ16KQePdj0VloHllXXXmtO1733wGhFa2v1kKjIuGpfHAgWshqB3F7Xn2s5FxTu3xvFXbg==
 
 react-sweet-state@2.0.2:
   version "2.0.2"

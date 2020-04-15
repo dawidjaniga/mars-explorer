@@ -1,28 +1,29 @@
 import mars from 'api/mars'
 import { createHook, createContainer, createStore } from 'react-sweet-state'
+import createDebug from 'debug'
+const debug = createDebug('mars:camera:store')
 
 const initialState = {
   photos: [],
   photosLoaded: 0,
-  page: 1,
-  isLoading: true
+  progress: 0,
+  isLoading: false
 }
 
 const actions = {
   reset: () => ({ setState }) => {
     setState(draft => initialState)
   },
-  fetchPhotos: ({ rover, camera, sol }) => async ({
+  fetchPhotos: ({ rover, camera, sol, page = 1 }) => async ({
     getState,
     setState,
     dispatch
   }) => {
+    debug('fetching photos')
     setState(draft => {
       draft.isLoading = true
-      // draft.photosLoaded = 0
     })
 
-    const { page, photos } = getState()
     const response = await mars.images.read({
       rover,
       camera,
@@ -34,39 +35,45 @@ const actions = {
       const localPhotos = []
 
       response.photos.forEach(photo => {
+        const photoElement = new window.Image()
+        photoElement.src = photo.img_src
+        photoElement.onload = () => dispatch(actions.addCameraImageLoaded())
         localPhotos.push(photo.img_src)
       })
 
       setState(draft => {
-        draft.isLoading = false
-        draft.photos = photos.concat(localPhotos)
+        draft.photos = getState().photos.concat(localPhotos)
       })
 
       if (response.photos.length === 25) {
-        console.log('Loading next page')
-        const nextPage = page + 1
-        dispatch(actions.setPage(nextPage))
-
-        if (nextPage < 10) {
-          dispatch(actions.fetchPhotos({ rover, camera, sol }))
+        if (page < 10) {
+          console.log('page + 1', page + 1)
+          dispatch(actions.fetchPhotos({ rover, camera, sol, page: page + 1 }))
         } else {
-          console.log('Load finished')
+          setState(draft => {
+            draft.isLoading = false
+          })
         }
+      } else {
+        debug('no more photos, finishing')
+        setState(draft => {
+          draft.isLoading = false
+        })
       }
+    } else {
+      debug('no photos')
+      setState(draft => {
+        draft.isLoading = false
+      })
     }
   },
-  setPage: page => ({ getState, setState }) => {
-    setState(draft => {
-      draft.page = page
-    })
-  },
   addCameraImageLoaded: () => ({ getState, setState }) => {
-    console.log('CameraStore: image loaded')
-    // setState(draft => {
-    //   const { loaded, photos } = draft.cameras[sol][camera]
-    //   draft.cameras[sol][camera].loaded++
-    //   draft.cameras[sol][camera].progress = (loaded + 1) / photos.length
-    // })
+    const { photosLoaded, photos } = getState()
+
+    setState(draft => {
+      draft.photosLoaded++
+      draft.progress = (photosLoaded + 1) / photos.length
+    })
   }
 }
 
