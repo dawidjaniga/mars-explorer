@@ -33,11 +33,12 @@ const actions = {
 
     if (response.photos.length) {
       const localPhotos = []
+      const onImageLoad = () => dispatch(actions.addCameraImageLoaded())
 
       response.photos.forEach(photo => {
         const photoElement = new window.Image()
+        photoElement.onload = onImageLoad
         photoElement.src = photo.img_src
-        photoElement.onload = () => dispatch(actions.addCameraImageLoaded())
         localPhotos.push(photo.img_src)
       })
 
