@@ -62,7 +62,6 @@ export default class Carousel extends React.Component {
   }
 
   handleKeyUp (event) {
-    event.preventDefault()
     const keyActionMap = {
       ArrowLeft: this.selectPreviousPhoto.bind(this),
       ArrowRight: this.selectNextPhoto.bind(this),
@@ -71,6 +70,7 @@ export default class Carousel extends React.Component {
     const action = keyActionMap[event.code]
 
     if (action) {
+      event.preventDefault()
       action()
     }
   }
