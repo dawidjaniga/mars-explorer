@@ -4,7 +4,6 @@ import {
   FiPlay,
   FiPause,
   FiArrowRight,
-  FiVoicemail,
   FiRotateCcw,
   FiRotateCw
 } from 'react-icons/fi'
@@ -44,6 +43,8 @@ const Photos = styled.div`
 const Counter = styled.div`
   padding: 1em;
 `
+
+const ONE_SECOND_IN_MS = 1000
 
 export default class Carousel extends React.Component {
   constructor (props) {
@@ -125,7 +126,7 @@ export default class Carousel extends React.Component {
   }
 
   slowDownInterval () {
-    const newDuration = this.state.intervalDuration + 100
+    const newDuration = this.state.intervalDuration * 1.1
     this.setState(
       {
         intervalDuration: newDuration > 5000 ? 5000 : newDuration
@@ -138,7 +139,7 @@ export default class Carousel extends React.Component {
   }
 
   speedUpInterval () {
-    const newDuration = this.state.intervalDuration - 100
+    const newDuration = this.state.intervalDuration * 0.9
     this.setState(
       {
         intervalDuration: newDuration < 40 ? 40 : newDuration
@@ -156,7 +157,9 @@ export default class Carousel extends React.Component {
         <IconContext.Provider value={{ size: '24px' }}>
           <Counter>
             {this.state.currentPhoto + 1} / {this.props.photos.length}{' '}
-            <span>{this.state.intervalDuration}</span>
+            <span>
+              {(ONE_SECOND_IN_MS / this.state.intervalDuration).toFixed(1)} FPS
+            </span>
           </Counter>
           <Controlls>
             <FiArrowLeft onClick={this.selectPreviousPhoto.bind(this)} />
