@@ -1,34 +1,53 @@
 import React from 'react'
 import ReactSlider from 'react-slider'
-import styled from 'styled-components'
-import { Button, withSounds } from 'arwes'
+import styled, { css } from 'styled-components'
+import { withSounds } from 'arwes'
+import { withTheme } from 'theming'
+import { transparentize } from 'polished'
+
+const StyledTrack = styled.div`
+  top: 0;
+  bottom: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  ${props =>
+    props.index === 0 &&
+    css`
+      background: ${props =>
+        transparentize(0.9, props.theme.color.success.base)};
+      border-color: ${props =>
+        transparentize(0.3, props.theme.color.success.base)};
+    `}
+`
+const ThemedTrack = withTheme(StyledTrack)
+
+function Tracks (props, state) {
+  return <ThemedTrack {...props} {...state} />
+}
+
+const StyledThumb = styled.div`
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  background: ${props => transparentize(0.8, props.theme.color.success.base)};
+  color: #00ff00;
+  font-size: 18px;
+  width: 50px;
+  cursor: grab;
+`
+const ThemedThumb = withTheme(StyledThumb)
+const Thumb = (props, state) => {
+  return (
+    <div {...props}>
+      <ThemedThumb>{state.valueNow}</ThemedThumb>
+    </div>
+  )
+}
 
 const StyledSlider = styled(ReactSlider)`
   width: 100%;
   height: 25px;
 `
-
-const StyledThumb = styled.div`
-  height: 25px;
-  line-height: 25px;
-  width: 25px;
-  text-align: center;
-  background-color: #000;
-  color: #fff;
-  cursor: grab;
-`
-
-const Thumb = (props, state) => {
-  return <StyledThumb {...props}>{state.valueNow}</StyledThumb>
-}
-
-const StyledTrack = styled.div`
-  top: 0;
-  bottom: 0;
-  background: ${props => (props.index === 1 ? '#444' : '#0f0')};
-`
-
-const Track = (props, state) => <StyledTrack {...props} index={state.index} />
 
 function Slider ({ value, max, onAfterChange, sounds }) {
   function handleSelectValue (value) {
@@ -41,7 +60,7 @@ function Slider ({ value, max, onAfterChange, sounds }) {
       max={max}
       onAfterChange={handleSelectValue}
       onSliderClick={handleSelectValue}
-      renderTrack={Track}
+      renderTrack={Tracks}
       renderThumb={Thumb}
     />
   )
