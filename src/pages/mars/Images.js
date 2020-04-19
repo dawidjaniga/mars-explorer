@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useLocation, Link, useParams, useHistory } from 'react-router-dom'
 import createDebug from 'debug'
 
-import { Button, Frame } from 'arwes'
+import { Button, Project as ProjectBase } from 'arwes'
 
 import Content from 'components/Content'
 import Footer from 'components/Footer'
@@ -18,14 +18,14 @@ import { Photos } from './containers/Photos'
 export const debug = createDebug('mars:images')
 
 export const cameras = {
-  fhaz: 'Front Hazard Avoidance Camera',
-  rhaz: 'Rear Hazard Avoidance Camera',
-  mast: 'Mast Camera',
-  chemcam: 'Chemistry and Camera',
+  fhaz: 'Front Hazard Avoidance',
+  rhaz: 'Rear Hazard Avoidance',
+  mast: 'Mast',
+  chemcam: 'Chemistry',
   mahli: 'Mars Hand Lens Imager',
   mardi: 'Mars Descent Imager',
-  navcam: 'Navigation Camera',
-  pancam: 'Panoramic Camera',
+  navcam: 'Navigation',
+  pancam: 'Panoramic',
   minites: 'Miniature Thermal Emission Spectrometer (Mini-TES)'
 }
 
@@ -49,8 +49,17 @@ function ButtonLink ({ to, children }) {
   )
 }
 
+function Project ({ children, ...props }) {
+  return (
+    <ProjectBase style={{ marginBottom: '40px' }} {...props}>
+      {children}
+    </ProjectBase>
+  )
+}
+
 const CamerasList = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `
 
 const CameraLink = styled.div`
@@ -62,8 +71,6 @@ const RoverWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `
-
-const RoverTop = styled.div``
 
 function Rover () {
   const { rover, sol, camera } = useParams()
@@ -89,26 +96,27 @@ function Rover () {
 
   return (
     <RoverWrapper>
-      <RoverTop>
-        <h3>Select sol</h3>
+      <Project animate header='Sol'>
         <Slider
           min={1}
           max={roverState.maxSol}
           value={sol}
           onAfterChange={handleAfterSolChange}
         />
-      </RoverTop>
+      </Project>
 
       {sol && (
-        <CamerasList>
-          {camerasByRover[rover].map(camera => (
-            <CameraLink key={camera}>
-              <ButtonLink to={`/images/${rover}/${sol}/${camera}`}>
-                {cameras[camera]}
-              </ButtonLink>
-            </CameraLink>
-          ))}
-        </CamerasList>
+        <Project animate header='Camera'>
+          <CamerasList>
+            {camerasByRover[rover].map(camera => (
+              <CameraLink key={camera}>
+                <ButtonLink to={`/images/${rover}/${sol}/${camera}`}>
+                  {cameras[camera]}
+                </ButtonLink>
+              </CameraLink>
+            ))}
+          </CamerasList>
+        </Project>
       )}
       {camera && <Photos />}
     </RoverWrapper>
@@ -116,6 +124,11 @@ function Rover () {
 }
 
 const Top = styled.div``
+
+const RoverMenu = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`
 
 export default function Images () {
   const { rover, camera } = useParams()
@@ -125,11 +138,15 @@ export default function Images () {
     <Page>
       <Content>
         <Top>
-          <Frame animate level={2} corners={3}>
-            <ButtonLink to='/images/curiosity/'>curiosity</ButtonLink>
-            <ButtonLink to='/images/opportunity'>opportunity</ButtonLink>
-            <ButtonLink to='/images/spirit'>spirit</ButtonLink>
-          </Frame>
+          <Project animate header='Rover'>
+            {anim => (
+              <RoverMenu>
+                <ButtonLink to='/images/curiosity/'>Curiosity</ButtonLink>
+                <ButtonLink to='/images/opportunity'>Opportunity</ButtonLink>
+                <ButtonLink to='/images/spirit'>Spirit</ButtonLink>
+              </RoverMenu>
+            )}
+          </Project>
         </Top>
         {rover && (
           <RoverContainer scope={rover}>
