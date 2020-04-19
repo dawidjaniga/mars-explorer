@@ -1,3 +1,7 @@
 body {
   --footer-height: 10%;
 }
+
+button {
+  font-family: 'Titillium Web';
+}
