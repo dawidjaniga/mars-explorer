@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { useLocation, Link, useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import createDebug from 'debug'
 
-import { Button, Project as ProjectBase } from 'arwes'
+import { Project as ProjectBase } from 'arwes'
 
 import Content from 'components/Content'
-import Footer from 'components/Footer'
-import Slider from 'components/Slider'
 import Page from 'components/Page'
+import ButtonLink from 'components/ButtonLink'
 import Loader from 'components/Loader'
+import Slider from 'components/Slider'
+import Footer from 'components/Footer'
 
 import { CameraContainer } from './CameraStore'
 import { useRoverStore, RoverContainer } from './RoverStore'
@@ -33,20 +34,6 @@ const camerasByRover = {
   curiosity: ['fhaz', 'rhaz', 'mast', 'chemcam', 'mahli', 'mardi', 'navcam'],
   opportunity: ['fhaz', 'rhaz', 'navcam', 'pancam', 'minites'],
   spirit: ['fhaz', 'rhaz', 'navcam', 'pancam', 'minites']
-}
-
-function ButtonLink ({ to, children }) {
-  const { pathname } = useLocation()
-  const isActive = pathname.includes(to)
-  const layer = isActive ? 'success' : 'control'
-
-  return (
-    <Link to={to}>
-      <Button animate layer={layer}>
-        {children}
-      </Button>
-    </Link>
-  )
 }
 
 function Project ({ children, ...props }) {
