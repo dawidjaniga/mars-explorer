@@ -1,10 +1,11 @@
 import React from 'react'
+import styled from 'styled-components'
 
-// const Page = styled(Layout)`
-//   display: flex;
-//   align-items: center;
-// `
+const Page = styled.main`
+  max-width: 960px;
+  margin: auto;
+`
 
 export default function ({ children }) {
-  return children
+  return <Page>{children}</Page>
 }
