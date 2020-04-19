@@ -3,7 +3,6 @@ import './App.css'
 
 import {
   Arwes,
-  Puffs,
   SoundsProvider,
   createSounds,
   ThemeProvider,
@@ -13,23 +12,20 @@ import {
 import { produce } from 'immer'
 import { defaults } from 'react-sweet-state'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-// import Puffs from 'components/Puffs'
 import Images from 'pages/mars/Images'
 
 defaults.devtools = true
 defaults.mutator = (currentState, producer) => produce(currentState, producer)
 
 const mySounds = {
-  shared: { volume: 1 }, // Shared sound settings
+  shared: { volume: 1 },
   players: {
-    // The player settings
     click: {
-      // With the name the player is created
-      sound: { src: ['/sound/click.mp3'] } // The settings to pass to Howler
+      sound: { src: ['/sound/click.mp3'] }
     },
     typing: {
       sound: { src: ['/sound/typing.mp3'] },
-      settings: { oneAtATime: true } // The custom app settings
+      settings: { oneAtATime: true }
     },
     deploy: {
       sound: { src: ['/sound/deploy.mp3'] },
@@ -42,13 +38,12 @@ function App () {
   return (
     <ThemeProvider theme={createTheme()}>
       <SoundsProvider sounds={createSounds(mySounds)}>
-        <Arwes>
+        <Arwes background='/bg.jpg' pattern='/glow.png'>
           <Router>
             <Switch>
               <Route path='/images/:rover?/:sol?/:camera?' component={Images} />
             </Switch>
           </Router>
-          {/* <Puffs /> */}
         </Arwes>
       </SoundsProvider>
     </ThemeProvider>
