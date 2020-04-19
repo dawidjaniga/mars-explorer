@@ -16,7 +16,6 @@ export const Photo = styled.div`
 
   img {
     width: 100%;
-    max-height: 90vh;
   }
 `
 

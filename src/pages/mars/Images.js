@@ -72,6 +72,10 @@ const RoverWrapper = styled.div`
   flex-direction: column;
 `
 
+const PhotosWrapper = styled.div`
+  min-height: 90vh;
+`
+
 function Rover () {
   const { rover, sol, camera } = useParams()
   const history = useHistory()
@@ -118,7 +122,11 @@ function Rover () {
           </CamerasList>
         </Project>
       )}
-      {camera && <Photos />}
+      {camera && (
+        <PhotosWrapper>
+          <Photos />
+        </PhotosWrapper>
+      )}
     </RoverWrapper>
   )
 }
@@ -132,31 +140,32 @@ const RoverMenu = styled.div`
 
 export default function Images () {
   const { rover, camera } = useParams()
-  console.log('params', useParams())
 
   return (
-    <Page>
-      <Content>
-        <Top>
-          <Project animate header='Rover'>
-            {anim => (
-              <RoverMenu>
-                <ButtonLink to='/images/curiosity/'>Curiosity</ButtonLink>
-                <ButtonLink to='/images/opportunity'>Opportunity</ButtonLink>
-                <ButtonLink to='/images/spirit'>Spirit</ButtonLink>
-              </RoverMenu>
-            )}
-          </Project>
-        </Top>
-        {rover && (
-          <RoverContainer scope={rover}>
-            <CameraContainer scope={`${rover}  ${camera}`}>
-              <Rover />
-            </CameraContainer>
-          </RoverContainer>
-        )}
-      </Content>
+    <>
+      <Page>
+        <Content>
+          <Top>
+            <Project animate header='Rover'>
+              {anim => (
+                <RoverMenu>
+                  <ButtonLink to='/images/curiosity/'>Curiosity</ButtonLink>
+                  <ButtonLink to='/images/opportunity'>Opportunity</ButtonLink>
+                  <ButtonLink to='/images/spirit'>Spirit</ButtonLink>
+                </RoverMenu>
+              )}
+            </Project>
+          </Top>
+          {rover && (
+            <RoverContainer scope={rover}>
+              <CameraContainer scope={`${rover}  ${camera}`}>
+                <Rover />
+              </CameraContainer>
+            </RoverContainer>
+          )}
+        </Content>
+      </Page>
       <Footer />
-    </Page>
+    </>
   )
 }
