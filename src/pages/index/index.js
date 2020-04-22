@@ -40,6 +40,8 @@ const Description = styled.h2`
 
 const CallToAction = styled.p`
   font-size: 40px;
+  padding: 20px;
+  margin: 0;
 `
 
 export default function Index () {
