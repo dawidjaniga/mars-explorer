@@ -26,7 +26,7 @@ export function Photos () {
   useEffect(() => {
     debug('fetching photos')
     fetchPhotos({ rover, camera, sol })
-  }, [rover, camera, sol])
+  }, [fetchPhotos, rover, camera, sol])
 
   if (isLoading) {
     return <Loader />
