@@ -1,7 +1,10 @@
-import mars from 'api/mars'
+import mars from 'services/api/mars'
 import { createHook, createContainer, createStore } from 'react-sweet-state'
 import createDebug from 'debug'
 const debug = createDebug('mars:camera:store')
+
+const MAX_IMAGES_PER_PAGE = 25
+const MAX_PAGES = 10
 
 const initialState = {
   photos: [],
@@ -46,9 +49,8 @@ const actions = {
         draft.photos = getState().photos.concat(localPhotos)
       })
 
-      if (response.photos.length === 25) {
-        if (page < 10) {
-          console.log('page + 1', page + 1)
+      if (response.photos.length === MAX_IMAGES_PER_PAGE) {
+        if (page <= MAX_PAGES) {
           dispatch(actions.fetchPhotos({ rover, camera, sol, page: page + 1 }))
         } else {
           setState(draft => {
@@ -57,12 +59,14 @@ const actions = {
         }
       } else {
         debug('no more photos, finishing')
+
         setState(draft => {
           draft.isLoading = false
         })
       }
     } else {
       debug('no photos')
+
       setState(draft => {
         draft.isLoading = false
       })
