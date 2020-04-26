@@ -22,7 +22,8 @@ const mySounds = {
   shared: { volume: 1 },
   players: {
     click: {
-      sound: { src: ['/sound/click.mp3'] }
+      sound: { src: ['/sound/information.mp3'] },
+      settings: { oneAtATime: true }
     },
     typing: {
       sound: { src: ['/sound/typing.mp3'] },

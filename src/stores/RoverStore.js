@@ -1,4 +1,4 @@
-import mars from 'services/api/mars'
+import mars from 'api/mars'
 import { createHook, createContainer, createStore } from 'react-sweet-state'
 
 const initialState = {
