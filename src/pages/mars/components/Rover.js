@@ -55,7 +55,7 @@ export default function Rover () {
 
   useEffect(() => {
     if (rover) {
-      debug('fetchinh rover data...')
+      debug(`Fetching "${rover}" data...`)
       roverActions.fetchDetails({
         rover
       })
@@ -70,7 +70,7 @@ export default function Rover () {
     return <Loader />
   }
 
-  debug('rover loaded')
+  debug('data loaded.')
   return (
     <RoverWrapper>
       <Project animate header='Sol'>

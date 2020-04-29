@@ -5,6 +5,7 @@ const debug = createDebug('mars:camera:store')
 
 const MAX_IMAGES_PER_PAGE = 25
 const MAX_PAGES = 10
+let fetchCounter = 1
 
 const initialState = {
   photos: [],
@@ -22,7 +23,12 @@ const actions = {
     setState,
     dispatch
   }) => {
-    debug('fetching photos')
+    console.group(`Fetch #${fetchCounter++}`)
+
+    if (page === 1) {
+      debug('Fetching photos...', { rover, camera, sol, page })
+    }
+
     setState(draft => {
       draft.isLoading = true
     })
@@ -33,8 +39,11 @@ const actions = {
       sol,
       page: page
     })
+    debug('Photos fetched from NASA')
 
     if (response.photos.length) {
+      debug(`Loading ${response.photos.length} photos in background...`)
+
       const localPhotos = []
       const onImageLoad = () => dispatch(actions.addCameraImageLoaded())
 
@@ -51,21 +60,28 @@ const actions = {
 
       if (response.photos.length === MAX_IMAGES_PER_PAGE) {
         if (page <= MAX_PAGES) {
+          debug('We need to go deeper. Making another call for photos...')
+          console.groupEnd()
+
           dispatch(actions.fetchPhotos({ rover, camera, sol, page: page + 1 }))
         } else {
+          debug(`Maxium amount of ${MAX_PAGES} pages reached. Stop.`)
+
           setState(draft => {
             draft.isLoading = false
           })
         }
       } else {
-        debug('no more photos, finishing')
+        debug(`No more photos. Last page: ${page}`)
+        console.groupEnd()
 
         setState(draft => {
           draft.isLoading = false
         })
       }
     } else {
-      debug('no photos')
+      debug('No photos.')
+      console.groupEnd()
 
       setState(draft => {
         draft.isLoading = false

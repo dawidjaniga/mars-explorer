@@ -5,11 +5,8 @@ import Carousel from 'components/Carousel'
 import Centered from 'components/Centered'
 import PercentageLoader from 'components/PercentageLoader'
 import { useCameraStore } from 'stores/CameraStore'
-import createDebug from 'debug'
 import { FiCameraOff } from 'react-icons/fi'
 import Loader from 'components/Loader'
-
-const debug = createDebug('mars:photos')
 
 export const Wrapper = styled.div`
   flex-grow: 1;
@@ -24,7 +21,6 @@ export function Photos () {
   const [{ isLoading, progress, photos }, { fetchPhotos }] = useCameraStore()
 
   useEffect(() => {
-    debug('fetching photos')
     fetchPhotos({ rover, camera, sol })
   }, [fetchPhotos, rover, camera, sol])
 
