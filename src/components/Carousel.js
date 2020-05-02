@@ -9,8 +9,17 @@ import {
 } from 'react-icons/fi'
 import styled from 'styled-components'
 import { IconContext } from 'react-icons'
+import createDebug from 'debug'
 
-export const Photo = styled.div`
+const debug = createDebug('mars:carousel')
+const DEBUG_PHOTO_TICKER = true
+const ONE_SECOND_IN_MS = 1000
+const MAX_ANIMATION_INTERVAL_IN_MS = 5000
+const MIN_ANIMATION_INTERVAL_IN_MS = 40
+const SLOW_DOWN_RATIO = 1.1
+const SPEED_UP_RATIO = 0.9
+
+const Photo = styled.div`
   width: 100%;
   display: ${props => (props.show ? 'initial' : 'none')};
 
@@ -43,16 +52,14 @@ const Counter = styled.div`
   padding: 1em;
 `
 
-const ONE_SECOND_IN_MS = 1000
-
 export default class Carousel extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       currentPhoto: 0,
-      ticker: 0,
+      ticker: -1,
       isPlaying: false,
-      intervalDuration: 1000
+      intervalDuration: ONE_SECOND_IN_MS
     }
   }
 
@@ -82,6 +89,7 @@ export default class Carousel extends React.Component {
   selectNextPhoto () {
     const ticker = this.state.ticker + 1
     const currentPhoto = ticker % this.props.photos.length
+    this.debugPhotoTicker(ticker, currentPhoto)
 
     this.setState({
       ticker,
@@ -92,11 +100,21 @@ export default class Carousel extends React.Component {
   selectPreviousPhoto () {
     const ticker = this.state.ticker - 1
     const currentPhoto = ticker % this.props.photos.length
+    this.debugPhotoTicker(ticker, currentPhoto)
 
     this.setState({
       ticker,
       currentPhoto
     })
+  }
+
+  debugPhotoTicker (ticker, currentPhoto) {
+    if (DEBUG_PHOTO_TICKER) {
+      const photos = this.props.photos.length
+      debug(
+        `Photo ticker: \t ticker=${ticker} \t photos=${photos} \t currentPhoto=${currentPhoto} \t\t ${ticker} % ${photos} = ${currentPhoto}`
+      )
+    }
   }
 
   handlePlayPauseClick () {
@@ -111,6 +129,7 @@ export default class Carousel extends React.Component {
     this.intervalHandler = setInterval(() => {
       this.selectNextPhoto()
     }, this.state.intervalDuration)
+
     this.setState({
       isPlaying: true
     })
@@ -119,16 +138,20 @@ export default class Carousel extends React.Component {
   stopInterval () {
     clearInterval(this.intervalHandler)
     this.intervalHandler = null
+
     this.setState({
       isPlaying: false
     })
   }
 
   slowDownInterval () {
-    const newDuration = this.state.intervalDuration * 1.1
+    const newDuration = this.state.intervalDuration * SLOW_DOWN_RATIO
     this.setState(
       {
-        intervalDuration: newDuration > 5000 ? 5000 : newDuration
+        intervalDuration:
+          newDuration > MAX_ANIMATION_INTERVAL_IN_MS
+            ? MAX_ANIMATION_INTERVAL_IN_MS
+            : newDuration
       },
       () => {
         this.stopInterval()
@@ -138,10 +161,13 @@ export default class Carousel extends React.Component {
   }
 
   speedUpInterval () {
-    const newDuration = this.state.intervalDuration * 0.9
+    const newDuration = this.state.intervalDuration * SPEED_UP_RATIO
     this.setState(
       {
-        intervalDuration: newDuration < 40 ? 40 : newDuration
+        intervalDuration:
+          newDuration < MIN_ANIMATION_INTERVAL_IN_MS
+            ? MIN_ANIMATION_INTERVAL_IN_MS
+            : newDuration
       },
       () => {
         this.stopInterval()
