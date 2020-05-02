@@ -3,7 +3,7 @@ import { createHook, createContainer, createStore } from 'react-sweet-state'
 import createDebug from 'debug'
 const debug = createDebug('mars:camera:store')
 
-const MAX_IMAGES_PER_PAGE = 25
+const MAX_PHOTOS_PER_PAGE = 25
 const MAX_PAGES = 10
 let fetchCounter = 1
 
@@ -33,7 +33,7 @@ const actions = {
       draft.isLoading = true
     })
 
-    const response = await mars.images.read({
+    const response = await mars.photos.read({
       rover,
       camera,
       sol,
@@ -45,11 +45,11 @@ const actions = {
       debug(`Loading ${response.photos.length} photos in background...`)
 
       const localPhotos = []
-      const onImageLoad = () => dispatch(actions.addCameraImageLoaded())
+      const onPhotoLoad = () => dispatch(actions.addCameraPhotoLoaded())
 
       response.photos.forEach(photo => {
         const photoElement = new window.Image()
-        photoElement.onload = onImageLoad
+        photoElement.onload = onPhotoLoad
         photoElement.src = photo.img_src
         localPhotos.push(photo.img_src)
       })
@@ -58,7 +58,7 @@ const actions = {
         draft.photos = getState().photos.concat(localPhotos)
       })
 
-      if (response.photos.length === MAX_IMAGES_PER_PAGE) {
+      if (response.photos.length === MAX_PHOTOS_PER_PAGE) {
         if (page <= MAX_PAGES) {
           debug('We need to go deeper. Making another call for photos...')
           console.groupEnd()
@@ -88,7 +88,7 @@ const actions = {
       })
     }
   },
-  addCameraImageLoaded: () => ({ getState, setState }) => {
+  addCameraPhotoLoaded: () => ({ getState, setState }) => {
     const { photosLoaded, photos } = getState()
 
     setState(draft => {

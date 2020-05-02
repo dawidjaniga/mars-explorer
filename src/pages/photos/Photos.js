@@ -14,14 +14,14 @@ import Rover from './components/Rover'
 import { RoverContainer } from 'stores/RoverStore'
 import { CameraContainer } from 'stores/CameraStore'
 
-export const debug = createDebug('mars:images')
+export const debug = createDebug('mars:photos')
 
 const RoverMenu = styled.div`
   display: flex;
   justify-content: space-evenly;
 `
 
-export default function Images () {
+export default function Photos () {
   const { rover, camera } = useParams()
 
   return (
@@ -32,9 +32,9 @@ export default function Images () {
             <Project animate header='Rover'>
               {anim => (
                 <RoverMenu>
-                  <ButtonLink to='/images/curiosity/'>Curiosity</ButtonLink>
-                  <ButtonLink to='/images/opportunity'>Opportunity</ButtonLink>
-                  <ButtonLink to='/images/spirit'>Spirit</ButtonLink>
+                  <ButtonLink to='/photos/curiosity/'>Curiosity</ButtonLink>
+                  <ButtonLink to='/photos/opportunity'>Opportunity</ButtonLink>
+                  <ButtonLink to='/photos/spirit'>Spirit</ButtonLink>
                 </RoverMenu>
               )}
             </Project>

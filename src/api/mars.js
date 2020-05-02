@@ -13,7 +13,7 @@ const createUrl = ({ rover, ...params }) =>
   })}`
 
 const api = {
-  images: {
+  photos: {
     read: ({ rover, camera, sol, page }) =>
       client
         .get(

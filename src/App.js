@@ -14,7 +14,7 @@ import { produce } from 'immer'
 import { defaults } from 'react-sweet-state'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Index from 'pages/index'
-import Images from 'pages/mars/Images'
+import Photos from 'pages/photos/Photos'
 
 defaults.devtools = true
 defaults.mutator = (currentState, producer) => produce(currentState, producer)
@@ -45,7 +45,7 @@ function App () {
           <Router>
             <Switch>
               <Route path='/' exact component={Index} />
-              <Route path='/images/:rover?/:sol?/:camera?' component={Images} />
+              <Route path='/photos/:rover?/:sol?/:camera?' component={Photos} />
             </Switch>
           </Router>
         </Arwes>

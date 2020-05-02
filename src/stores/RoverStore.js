@@ -14,7 +14,7 @@ const actions = {
       return
     }
 
-    const { photos } = await mars.images.read({
+    const { photos } = await mars.photos.read({
       rover,
       sol: 1
     })

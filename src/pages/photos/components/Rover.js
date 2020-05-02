@@ -63,7 +63,7 @@ export default function Rover () {
   }, [roverActions, rover])
 
   function handleAfterSolChange (sol) {
-    history.push(`/images/${rover}/${sol}`)
+    history.push(`/photos/${rover}/${sol}`)
   }
 
   if (roverState.isLoading) {
@@ -87,7 +87,7 @@ export default function Rover () {
           <CamerasList>
             {camerasByRover[rover].map(camera => (
               <CameraLink key={camera}>
-                <ButtonLink to={`/images/${rover}/${sol}/${camera}`}>
+                <ButtonLink to={`/photos/${rover}/${sol}/${camera}`}>
                   {cameras[camera]}
                 </ButtonLink>
               </CameraLink>

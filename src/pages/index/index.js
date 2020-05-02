@@ -56,7 +56,7 @@ export default function Index () {
                 <Description>Discover NASA Mars footage</Description>
               </Title>
             </Heading>
-            <ButtonLink to='images'>
+            <ButtonLink to='photos'>
               <CallToAction>Explore</CallToAction>
             </ButtonLink>
           </Inner>
