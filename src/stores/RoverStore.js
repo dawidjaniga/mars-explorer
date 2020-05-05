@@ -4,8 +4,11 @@ import { createHook, createContainer, createStore } from 'react-sweet-state'
 const initialState = {
   maxSol: 0,
   totalPhotos: 0,
+  landingDate: null,
+  status: null,
   isLoading: true,
-  fetched: false
+  fetched: false,
+  error: null
 }
 
 const actions = {
@@ -14,21 +17,28 @@ const actions = {
       return
     }
 
-    const { photos } = await mars.photos.read({
-      rover,
-      sol: 1
-    })
+    try {
+      const { photos } = await mars.photos.read({
+        rover,
+        sol: 1
+      })
 
-    if (photos.length) {
-      const { rover } = photos[0]
+      if (photos.length) {
+        const { rover } = photos[0]
 
+        setState(draft => {
+          draft.maxSol = rover.max_sol
+          draft.totalPhotos = rover.total_photos
+          draft.landingDate = rover.landing_date
+          draft.status = rover.status
+          draft.fetched = true
+          draft.isLoading = false
+        })
+      }
+    } catch (e) {
       setState(draft => {
-        draft.maxSol = rover.max_sol
-        draft.totalPhotos = rover.total_photos
-        draft.landingDate = rover.landing_date
-        draft.status = rover.status
         draft.isLoading = false
-        draft.fetched = true
+        draft.error = e.message
       })
     }
   }

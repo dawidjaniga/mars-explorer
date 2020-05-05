@@ -7,6 +7,7 @@ import PercentageLoader from 'components/PercentageLoader'
 import { useCameraStore } from 'stores/CameraStore'
 import { FiCameraOff } from 'react-icons/fi'
 import Loader from 'components/Loader'
+import Error from 'components/Error'
 
 export const Wrapper = styled.div`
   flex-grow: 1;
@@ -18,7 +19,10 @@ export const Wrapper = styled.div`
 
 export function Photos () {
   const { rover, camera, sol } = useParams()
-  const [{ isLoading, progress, photos }, { fetchPhotos }] = useCameraStore()
+  const [
+    { isLoading, progress, photos, error },
+    { fetchPhotos }
+  ] = useCameraStore()
 
   useEffect(() => {
     fetchPhotos({ rover, camera, sol })
@@ -26,6 +30,10 @@ export function Photos () {
 
   if (isLoading) {
     return <Loader />
+  }
+
+  if (error) {
+    return <Error>{error}</Error>
   }
 
   if (!photos.length) {

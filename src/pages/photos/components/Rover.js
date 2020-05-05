@@ -7,6 +7,7 @@ import Loader from 'components/Loader'
 import Slider from 'components/Slider'
 import ButtonLink from 'components/ButtonLink'
 import Project from 'components/Project'
+import Error from 'components/Error'
 
 import { Photos } from './Photos'
 import { useRoverStore } from 'stores/RoverStore'
@@ -51,7 +52,7 @@ const PhotosWrapper = styled.div`
 export default function Rover () {
   const { rover, sol, camera } = useParams()
   const history = useHistory()
-  const [roverState, roverActions] = useRoverStore()
+  const [{ isLoading, error, maxSol }, roverActions] = useRoverStore()
 
   useEffect(() => {
     if (rover) {
@@ -66,17 +67,22 @@ export default function Rover () {
     history.push(`/photos/${rover}/${sol}`)
   }
 
-  if (roverState.isLoading) {
+  if (isLoading) {
     return <Loader />
   }
 
+  if (error) {
+    return <Error>{error}</Error>
+  }
+
   debug('data loaded.')
+
   return (
     <RoverWrapper>
       <Project animate header='Sol'>
         <Slider
           min={1}
-          max={roverState.maxSol}
+          max={maxSol}
           value={sol}
           onAfterChange={handleAfterSolChange}
         />

@@ -7,12 +7,13 @@ import {
   FiRotateCcw,
   FiRotateCw
 } from 'react-icons/fi'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { IconContext } from 'react-icons'
 import createDebug from 'debug'
 
 const debug = createDebug('mars:carousel')
-const DEBUG_PHOTO_TICKER = true
+const DEBUG_PHOTO_TICKER = false
+const DEBUG_PHOTO_ANIMATION = false
 const ONE_SECOND_IN_MS = 1000
 const MAX_ANIMATION_INTERVAL_IN_MS = 5000
 const MIN_ANIMATION_INTERVAL_IN_MS = 40
@@ -21,7 +22,14 @@ const SPEED_UP_RATIO = 0.9
 
 const Photo = styled.div`
   width: 100%;
-  display: ${props => (props.show ? 'initial' : 'none')};
+  ${DEBUG_PHOTO_ANIMATION
+    ? css`
+        width: 25%;
+        opacity: ${props => (props.show ? 1 : 0.2)};
+      `
+    : css`
+        display: ${props => (props.show ? 'initial' : 'none')};
+      `}
 
   img {
     width: 100%;
