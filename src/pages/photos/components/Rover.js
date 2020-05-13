@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
+import { Button } from 'arwes'
 import createDebug from 'debug'
 
 import Loader from 'components/Loader'
@@ -13,6 +14,7 @@ import { Photos } from './Photos'
 import { useRoverStore } from 'stores/RoverStore'
 
 const debug = createDebug('mars:rover')
+const MIN_SOL = 0
 const cameras = {
   fhaz: 'Front Hazard Avoidance',
   rhaz: 'Rear Hazard Avoidance',
@@ -29,6 +31,11 @@ const camerasByRover = {
   opportunity: ['fhaz', 'rhaz', 'navcam', 'pancam', 'minites'],
   spirit: ['fhaz', 'rhaz', 'navcam', 'pancam', 'minites']
 }
+
+const SolSelector = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 const CamerasList = styled.div`
   display: flex;
@@ -63,8 +70,28 @@ export default function Rover () {
     }
   }, [roverActions, rover])
 
-  function handleAfterSolChange (sol) {
+  function setSolUrl (sol) {
     history.push(`/photos/${rover}/${sol}`)
+  }
+
+  function handleAfterSolChange (newSol) {
+    setSolUrl(newSol)
+  }
+
+  function handleIncrementClick () {
+    const newSol = +sol + 1
+
+    if (newSol <= maxSol) {
+      setSolUrl(newSol)
+    }
+  }
+
+  function handleDecrementClick () {
+    const newSol = sol - 1
+
+    if (newSol >= MIN_SOL) {
+      setSolUrl(newSol)
+    }
   }
 
   if (isLoading) {
@@ -80,12 +107,20 @@ export default function Rover () {
   return (
     <RoverWrapper>
       <Project animate header='Sol'>
-        <Slider
-          min={1}
-          max={maxSol}
-          value={sol}
-          onAfterChange={handleAfterSolChange}
-        />
+        <SolSelector>
+          <Button animate layer='success' onClick={handleDecrementClick}>
+            -
+          </Button>
+          <Slider
+            min={1}
+            max={maxSol}
+            value={sol}
+            onAfterChange={handleAfterSolChange}
+          />
+          <Button animate layer='success' onClick={handleIncrementClick}>
+            +
+          </Button>
+        </SolSelector>
       </Project>
 
       {sol && (
