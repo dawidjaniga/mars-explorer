@@ -39,13 +39,13 @@ const actions = {
 
     try {
       const response = await mars.photos.read(params)
-      debug('Photos fetched from NASA')
+      debug(`Photos for page ${page} fetched from NASA`)
 
       if (response.photos.length) {
         debug(`Loading ${response.photos.length} photos in background...`)
 
         const localPhotos = []
-        const onPhotoLoad = () => dispatch(actions.addCameraPhotoLoaded())
+        const onPhotoLoad = () => dispatch(actions.incrementLoadedPhotos())
 
         response.photos.forEach(photo => {
           const photoElement = new window.Image()
@@ -59,7 +59,7 @@ const actions = {
         })
 
         if (response.photos.length === MAX_PHOTOS_PER_PAGE) {
-          if (page <= MAX_PAGES) {
+          if (page < MAX_PAGES) {
             debug('We need to go deeper. Making another call for photos...')
             console.groupEnd()
 
@@ -90,7 +90,7 @@ const actions = {
       })
     }
   },
-  addCameraPhotoLoaded: () => ({ getState, setState }) => {
+  incrementLoadedPhotos: () => ({ getState, setState }) => {
     const { photosLoaded, photos } = getState()
 
     setState(draft => {
