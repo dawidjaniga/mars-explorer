@@ -4,11 +4,10 @@ import qs from 'qs'
 const client = ky.create({
   prefixUrl: 'https://api.nasa.gov/mars-photos/api/v1/rovers'
 })
-const apiKey = 'GttlntRqZ8uDu1wQfKJHuAXI8BiUOs9qWzjWaxBY'
 
 const createUrl = ({ rover, ...params }) =>
   `${rover}/photos?${qs.stringify({
-    api_key: apiKey,
+    api_key: process.env.REACT_APP_MARS_API_KEY,
     ...params
   })}`
 

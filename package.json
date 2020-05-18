@@ -6,6 +6,7 @@
     "arwes": "1.0.0-alpha.5",
     "debug": "4.1.1",
     "immer": "6.0.3",
+    "ky": "0.20.0",
     "qs": "6.9.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -29,7 +30,11 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
