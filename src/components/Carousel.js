@@ -215,7 +215,7 @@ export default class Carousel extends React.Component {
         <Photos>
           {this.props.photos.map((src, index) => (
             <Photo key={src} show={index === this.state.currentPhoto}>
-              <img src={src} />
+              <img src={src} alt={`Mars Footage ${index}`} />
             </Photo>
           ))}
         </Photos>
