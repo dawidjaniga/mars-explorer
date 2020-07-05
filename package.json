@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "arwes": "1.0.0-alpha.5",
+    "date-fns": "2.14.0",
     "debug": "4.1.1",
     "immer": "6.0.3",
     "ky": "0.20.0",

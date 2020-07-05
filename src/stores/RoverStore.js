@@ -1,5 +1,6 @@
 import mars from 'api/mars'
 import { createHook, createContainer, createStore } from 'react-sweet-state'
+import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
 
 const initialState = {
   maxSol: 0,
@@ -25,9 +26,13 @@ const actions = {
 
       if (photos.length) {
         const { rover } = photos[0]
+        const maxSol = differenceInCalendarDays(
+          new Date(),
+          new Date(rover.landing_date)
+        )
 
         setState(draft => {
-          draft.maxSol = rover.max_sol
+          draft.maxSol = rover.max_sol || maxSol
           draft.totalPhotos = rover.total_photos
           draft.landingDate = rover.landing_date
           draft.status = rover.status
