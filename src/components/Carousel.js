@@ -45,10 +45,16 @@ const Wrapper = styled.div`
 `
 const Controlls = styled.div`
   padding: 1em;
+  display: flex;
 
   svg {
     cursor: pointer;
     margin: 0 1em;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 `
 
