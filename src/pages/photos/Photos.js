@@ -32,7 +32,8 @@ export default function Photos () {
             <Project animate header='Rover'>
               {anim => (
                 <RoverMenu>
-                  <ButtonLink to='/photos/curiosity/'>Curiosity</ButtonLink>
+                  <ButtonLink to='/photos/perseverance'>Perseverance</ButtonLink>
+                  <ButtonLink to='/photos/curiosity'>Curiosity</ButtonLink>
                   <ButtonLink to='/photos/opportunity'>Opportunity</ButtonLink>
                   <ButtonLink to='/photos/spirit'>Spirit</ButtonLink>
                 </RoverMenu>

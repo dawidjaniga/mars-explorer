@@ -1,6 +1,7 @@
 import mars from 'api/mars'
 import { createHook, createContainer, createStore } from 'react-sweet-state'
 import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
+import { cameras } from 'pages/photos/components/Rover'
 
 const initialState = {
   maxSol: 0,
@@ -25,6 +26,15 @@ const actions = {
       })
 
       if (photos.length) {
+        const existingCameras = Object.keys(cameras)
+        const nonExistingCameras = []
+
+        photos.forEach(photo => {
+          if (!existingCameras.includes(photo.camera.name)) {
+            nonExistingCameras[photo.camera.name] = photo.camera.full_name
+          }
+        })
+
         const { rover } = photos[0]
         const maxSol = differenceInCalendarDays(
           new Date(),
